@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next gemini" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="shiro,springBoot,代码分享,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="依赖包12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.apache.shiro&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;shiro-spring&amp;lt;/artifactId&amp;gt;	&amp;lt;version&amp;gt;1.3.2&amp;lt;/version&amp;gt;&amp;lt;/dependency&amp;gt; 数据库表一切从简，用户 user 表，">
+<meta name="keywords" content="shiro,springBoot,代码分享">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shiro 整合 springBoot 实现基本的角色权限控制">
+<meta property="og:url" content="http://yoursite.com/2019/03/12/shiro/index.html">
+<meta property="og:site_name" content="朝明">
+<meta property="og:description" content="依赖包12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.apache.shiro&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;shiro-spring&amp;lt;/artifactId&amp;gt;	&amp;lt;version&amp;gt;1.3.2&amp;lt;/version&amp;gt;&amp;lt;/dependency&amp;gt; 数据库表一切从简，用户 user 表，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-14c71a60da237fbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-9bfb0a984fc9c28c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-7048df42b04f5763.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-52bda59ed16c2de4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-cb0266faa390c80f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-2b07ade4277c9f3d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-86ce356a15a49615.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-cb377665ca151889.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8807674-3fc0b74103c51b2c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-03-11T16:49:10.056Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shiro 整合 springBoot 实现基本的角色权限控制">
+<meta name="twitter:description" content="依赖包12345&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.apache.shiro&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;shiro-spring&amp;lt;/artifactId&amp;gt;	&amp;lt;version&amp;gt;1.3.2&amp;lt;/version&amp;gt;&amp;lt;/dependency&amp;gt; 数据库表一切从简，用户 user 表，">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8807674-14c71a60da237fbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/12/shiro/">
+
+
+
+
+
+  <title>shiro 整合 springBoot 实现基本的角色权限控制 | 朝明</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝明</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-读书">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-电影">
+          <a href="/movies" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-film"></i> <br>
+            
+            电影
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/12/shiro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yu Peng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝明">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">shiro 整合 springBoot 实现基本的角色权限控制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-12T00:43:53+08:00">
+                2019-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/权限/" itemprop="url" rel="index">
+                    <span itemprop="name">权限</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="依赖包"><a href="#依赖包" class="headerlink" title="依赖包"></a>依赖包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.apache.shiro&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;shiro-spring&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.3.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="数据库表"><a href="#数据库表" class="headerlink" title="数据库表"></a>数据库表</h2><p>一切从简，用户 user 表，以及角色 role 表</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8807674-14c71a60da237fbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="user"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8807674-9bfb0a984fc9c28c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="role"></p>
+<a id="more"></a>
+<h2 id="Shiro-相关类"><a href="#Shiro-相关类" class="headerlink" title="Shiro 相关类"></a>Shiro 相关类</h2><h3 id="Shiro-配置类"><a href="#Shiro-配置类" class="headerlink" title="Shiro 配置类"></a>Shiro 配置类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class ShiroConfig &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) &#123;</span><br><span class="line">        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();</span><br><span class="line">        // 必须设置 SecurityManager</span><br><span class="line">        shiroFilterFactoryBean.setSecurityManager(securityManager);</span><br><span class="line">        // setLoginUrl 如果不设置值，默认会自动寻找Web工程根目录下的&quot;/login.jsp&quot;页面 或 &quot;/login&quot; 映射</span><br><span class="line">        shiroFilterFactoryBean.setLoginUrl(&quot;/notLogin&quot;);</span><br><span class="line">        // 设置无权限时跳转的 url;</span><br><span class="line">        shiroFilterFactoryBean.setUnauthorizedUrl(&quot;/notRole&quot;);</span><br><span class="line"></span><br><span class="line">        // 设置拦截器</span><br><span class="line">        Map&lt;String, String&gt; filterChainDefinitionMap = new LinkedHashMap&lt;&gt;();</span><br><span class="line">        //游客，开发权限</span><br><span class="line">        filterChainDefinitionMap.put(&quot;/guest/**&quot;, &quot;anon&quot;);</span><br><span class="line">        //用户，需要角色权限 “user”</span><br><span class="line">        filterChainDefinitionMap.put(&quot;/user/**&quot;, &quot;roles[user]&quot;);</span><br><span class="line">        //管理员，需要角色权限 “admin”</span><br><span class="line">        filterChainDefinitionMap.put(&quot;/admin/**&quot;, &quot;roles[admin]&quot;);</span><br><span class="line">        //开放登陆接口</span><br><span class="line">        filterChainDefinitionMap.put(&quot;/login&quot;, &quot;anon&quot;);</span><br><span class="line">        //其余接口一律拦截</span><br><span class="line">        //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截</span><br><span class="line">        filterChainDefinitionMap.put(&quot;/**&quot;, &quot;authc&quot;);</span><br><span class="line"></span><br><span class="line">        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);</span><br><span class="line">        System.out.println(&quot;Shiro拦截器工厂类注入成功&quot;);</span><br><span class="line">        return shiroFilterFactoryBean;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注入 securityManager</span><br><span class="line">     */</span><br><span class="line">    @Bean</span><br><span class="line">    public SecurityManager securityManager() &#123;</span><br><span class="line">        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();</span><br><span class="line">        // 设置realm.</span><br><span class="line">        securityManager.setRealm(customRealm());</span><br><span class="line">        return securityManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 自定义身份认证 realm;</span><br><span class="line">     * &lt;p&gt;</span><br><span class="line">     * 必须写这个类，并加上 @Bean 注解，目的是注入 CustomRealm，</span><br><span class="line">     * 否则会影响 CustomRealm类 中其他类的依赖注入</span><br><span class="line">     */</span><br><span class="line">    @Bean</span><br><span class="line">    public CustomRealm customRealm() &#123;</span><br><span class="line">        return new CustomRealm();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：里面的 SecurityManager 类导入的应该是 <figure class="highlight plain"><figcaption><span>org.apache.shiro.mgt.SecurityManager;``` 但是，如果你是复制代码过来的话，会默认导入 ```java.lang.SecurityManager``` 这里也稍稍有点坑，其他的类的话，也是都属于 shiro 包里面的类</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">shirFilter 方法中主要是设置了一些重要的跳转 url，比如未登陆时，无权限时的跳转；以及设置了各类 url 的权限拦截，比如 /user 开始的 url 需要 user 权限，/admin 开始的 url 需要 admin 权限等</span><br><span class="line"></span><br><span class="line">#### 权限拦截 Filter </span><br><span class="line"></span><br><span class="line">当运行一个Web应用程序时，Shiro将会创建一些有用的默认 Filter 实例，并自动地将它们置为可用，而这些默认的 Filter 实例是被 DefaultFilter 枚举类定义的，当然我们也可以自定义 Filter 实例，这些在以后的文章中会讲到</span><br><span class="line"></span><br><span class="line">![DefaultFilter](https://upload-images.jianshu.io/upload_images/8807674-6ef51f395cf8c6b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</span><br><span class="line">  </span><br><span class="line">Filter  | 解释</span><br><span class="line">----|---</span><br><span class="line">anon         | 无参，开放权限，可以理解为匿名用户或游客</span><br><span class="line">authc        | 无参，需要认证</span><br><span class="line">logout       | 无参，注销，执行后会直接跳转到``` shiroFilterFactoryBean.setLoginUrl(); ``` 设置的 url </span><br><span class="line">authcBasic   | 无参，表示 httpBasic 认证</span><br><span class="line">user          | 无参，表示必须存在用户，当登入操作时不做检查</span><br><span class="line">ssl  | 无参，表示安全的URL请求，协议为 https</span><br><span class="line">perms[user]  | 参数可写多个，表示需要某个或某些权限才能通过，多个参数时写 perms[&quot;user, admin&quot;]，当有多个参数时必须每个参数都通过才算通过</span><br><span class="line">roles[admin]  | 参数可写多个，表示是某个或某些角色才能通过，多个参数时写 roles[&quot;admin，user&quot;]，当有多个参数时必须每个参数都通过才算通过</span><br><span class="line">rest[user] |根据请求的方法，相当于 perms[user:method]，其中 method 为 post，get，delete 等</span><br><span class="line">port[8081] | 当请求的URL端口不是8081时，跳转到schemal://serverName:8081?queryString 其中 schmal 是协议 http 或 https 等等，serverName 是你访问的 Host，8081 是 Port 端口，queryString 是你访问的 URL 里的 ? 后面的参数 </span><br><span class="line"></span><br><span class="line"> 常用的主要就是 anon，authc，user，roles，perms 等</span><br><span class="line"></span><br><span class="line">**注意**：anon, authc, authcBasic, user 是第一组认证过滤器，perms, port, rest, roles, ssl 是第二组授权过滤器，要通过授权过滤器，就先要完成登陆认证操作（即先要完成认证才能前去寻找授权) 才能走第二组授权器（例如访问需要 roles 权限的 url，如果还没有登陆的话，会直接跳转到 ``` shiroFilterFactoryBean.setLoginUrl(); ``` 设置的 url ）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 自定义 realm 类 </span><br><span class="line">我们首先要继承 AuthorizingRealm 类来自定义我们自己的 realm 以进行我们自定义的身份，权限认证操作。</span><br><span class="line">记得要 Override 重写 doGetAuthenticationInfo 和 doGetAuthorizationInfo 两个方法（两个方法名很相似，不要搞错）</span><br></pre></td></tr></table></figure></p>
+<p>public class CustomRealm extends AuthorizingRealm {<br>    private UserMapper userMapper;</p>
+<pre><code>@Autowired
+private void setUserMapper(UserMapper userMapper) {
+    this.userMapper = userMapper;
+}
+
+/**
+ * 获取身份验证信息
+ * Shiro中，最终是通过 Realm 来获取应用程序中的用户、角色及权限信息的。
+ *
+ * @param authenticationToken 用户身份信息 token
+ * @return 返回封装了用户信息的 AuthenticationInfo 实例
+ */
+@Override
+protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+    System.out.println(&quot;————身份认证方法————&quot;);
+    UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
+    // 从数据库获取对应用户名密码的用户
+    String password = userMapper.getPassword(token.getUsername());
+    if (null == password) {
+        throw new AccountException(&quot;用户名不正确&quot;);
+    } else if (!password.equals(new String((char[]) token.getCredentials()))) {
+        throw new AccountException(&quot;密码不正确&quot;);
+    }
+    return new SimpleAuthenticationInfo(token.getPrincipal(), password, getName());
+}
+
+/**
+ * 获取授权信息
+ *
+ * @param principalCollection
+ * @return
+ */
+@Override
+protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+    System.out.println(&quot;————权限认证————&quot;);
+    String username = (String) SecurityUtils.getSubject().getPrincipal();
+    SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+    //获得该用户角色
+    String role = userMapper.getRole(username);
+    Set&lt;String&gt; set = new HashSet&lt;&gt;();
+    //需要将 role 封装到 Set 作为 info.setRoles() 的参数
+    set.add(role);
+    //设置该用户拥有的角色
+    info.setRoles(set);
+    return info;
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">重写的两个方法分别是实现身份认证以及权限认证，shiro 中有个作登陆操作的 ``` Subject.login() ``` 方法，当我们把封装了用户名，密码的 token 作为参数传入，便会跑进这两个方法里面（不一定两个方法都会进入）</span><br><span class="line"></span><br><span class="line">其中 doGetAuthorizationInfo 方法只有在需要权限认证时才会进去，比如前面配置类中配置了 ``` filterChainDefinitionMap.put(&quot;/admin/**&quot;, &quot;roles[admin]&quot;);``` 的管理员角色，这时进入 /admin 时就会进入 doGetAuthorizationInfo 方法来检查权限；而 doGetAuthenticationInfo 方法则是需要身份认证时（比如前面的 ```Subject.login()``` 方法）才会进入</span><br><span class="line"></span><br><span class="line">再说下 UsernamePasswordToken 类，我们可以从该对象拿到登陆时的用户名和密码（登陆时会使用 ```new UsernamePasswordToken(username, password);```），而 get 用户名或密码有以下几个方法</span><br></pre></td></tr></table></figure></p>
+<p>token.getUsername()  //获得用户名 String<br>token.getPrincipal() //获得用户名 Object<br>token.getPassword()  //获得密码 char[]<br>token.getCredentials() //获得密码 Object<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**注意**：有很多人会发现，UserMapper 等类，接口无法通过 @Autowired 注入进来，跑程序的时候会报 NullPointerException，网上说了很多诸如是 Spring 加载顺序等原因，但其实有一个很重要的地方要大家注意，CustomRealm 这个类是在 shiro 配置类的 ```securityManager.setRealm() ``` 方法中设置进去的，而很多人直接写```securityManager.setRealm(new CustomRealm());``` ,这样是不行的，必须要使用 @Bean 注入 MyRealm，不能直接 new 对象：</span><br></pre></td></tr></table></figure></p>
+<pre><code>@Bean
+public SecurityManager securityManager() {
+    DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+    // 设置realm.
+    securityManager.setRealm(customRealm());
+    return securityManager;
+}
+
+@Bean
+public CustomRealm customRealm() {
+    return new CustomRealm();
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">道理也很简单，和 Controller 中调用 Service 一样，都是 SpringBean，不能自己 new</span><br><span class="line"></span><br><span class="line">当然，同样的道理也可以这样写：</span><br></pre></td></tr></table></figure>
+<pre><code>@Bean
+public SecurityManager securityManager(CustomRealm customRealm) {
+    DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+    // 设置realm.
+    securityManager.setRealm(customRealm);
+    return securityManager;
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">然后只要在 CustomRealm 类加上个类似 @Component 的注解即可</span><br><span class="line"></span><br><span class="line">## 功能实现</span><br><span class="line">本文的功能全部以接口返回 json 数据的方式实现</span><br><span class="line">### 根据 url 权限分配 controller</span><br></pre></td></tr></table></figure>
+<p>游客<br>@RestController<br>@RequestMapping(“/guest”)<br>public class GuestController{<br>    @Autowired<br>    private final ResultMap resultMap;</p>
+<pre><code>@RequestMapping(value = &quot;/enter&quot;, method = RequestMethod.GET)
+public ResultMap login() {
+    return resultMap.success().message(&quot;欢迎进入，您的身份是游客&quot;);
+}
+
+@RequestMapping(value = &quot;/getMessage&quot;, method = RequestMethod.GET)
+public ResultMap submitLogin() {
+    return resultMap.success().message(&quot;您拥有获得该接口的信息的权限！&quot;);
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">普通登陆用户</span><br><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;/user&quot;)</span><br><span class="line">public class UserController&#123;</span><br><span class="line">    @Autowired    </span><br><span class="line">    private final ResultMap resultMap;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/getMessage&quot;, method = RequestMethod.GET)</span><br><span class="line">    public ResultMap getMessage() &#123;</span><br><span class="line">        return resultMap.success().message(&quot;您拥有用户权限，可以获得该接口的信息！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">管理员</span><br><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;/admin&quot;)</span><br><span class="line">public class AdminController &#123;</span><br><span class="line">    @Autowired    </span><br><span class="line">    private final ResultMap resultMap;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/getMessage&quot;, method = RequestMethod.GET)</span><br><span class="line">    public ResultMap getMessage() &#123;</span><br><span class="line">        return resultMap.success().message(&quot;您拥有管理员权限，可以获得该接口的信息！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>突然注意到 CustomRealm 类那里抛出了 AccountException 异常，现在建个类进行异常捕获<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@RestControllerAdvice</span><br><span class="line">public class ExceptionController &#123;</span><br><span class="line">    private final ResultMap resultMap;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    public ExceptionController(ResultMap resultMap) &#123;</span><br><span class="line">        this.resultMap = resultMap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 捕捉 CustomRealm 抛出的异常</span><br><span class="line">    @ExceptionHandler(AccountException.class)</span><br><span class="line">    public ResultMap handleShiroException(Exception ex) &#123;</span><br><span class="line">        return resultMap.fail().message(ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>还有进行登陆等处理的 LoginController<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class LoginController &#123;</span><br><span class="line">    @Autowired    </span><br><span class="line">    private ResultMap resultMap;</span><br><span class="line">    private UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/notLogin&quot;, method = RequestMethod.GET)</span><br><span class="line">    public ResultMap notLogin() &#123;</span><br><span class="line">        return resultMap.success().message(&quot;您尚未登陆！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/notRole&quot;, method = RequestMethod.GET)</span><br><span class="line">    public ResultMap notRole() &#123;</span><br><span class="line">        return resultMap.success().message(&quot;您没有权限！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;/logout&quot;, method = RequestMethod.GET)</span><br><span class="line">    public ResultMap logout() &#123;</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line">        //注销</span><br><span class="line">        subject.logout();</span><br><span class="line">        return resultMap.success().message(&quot;成功注销！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 登陆</span><br><span class="line">     *</span><br><span class="line">     * @param username 用户名</span><br><span class="line">     * @param password 密码</span><br><span class="line">     */</span><br><span class="line">    @RequestMapping(value = &quot;/login&quot;, method = RequestMethod.POST)</span><br><span class="line">    public ResultMap login(String username, String password) &#123;</span><br><span class="line">        // 从SecurityUtils里边创建一个 subject</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line">        // 在认证提交前准备 token（令牌）</span><br><span class="line">        UsernamePasswordToken token = new UsernamePasswordToken(username, password);</span><br><span class="line">        // 执行认证登陆</span><br><span class="line">        subject.login(token);</span><br><span class="line">        //根据权限，指定返回数据</span><br><span class="line">        String role = userMapper.getRole(username);</span><br><span class="line">        if (&quot;user&quot;.equals(role)) &#123;</span><br><span class="line">            return resultMap.success().message(&quot;欢迎登陆&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        if (&quot;admin&quot;.equals(role)) &#123;</span><br><span class="line">            return resultMap.success().message(&quot;欢迎来到管理员页面&quot;);</span><br><span class="line">        &#125; </span><br><span class="line">        return resultMap.fail().message(&quot;权限错误！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p><img src="https://upload-images.jianshu.io/upload_images/8807674-7048df42b04f5763.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="登陆前访问信息接口"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8807674-52bda59ed16c2de4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="普通用户登陆"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8807674-cb0266faa390c80f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="密码错误"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8807674-2b07ade4277c9f3d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="管理员登陆"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8807674-86ce356a15a49615.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="获取信息"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8807674-cb377665ca151889.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="获取信息"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8807674-3fc0b74103c51b2c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="注销"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shiro/" rel="tag"># shiro</a>
+          
+            <a href="/tags/springBoot/" rel="tag"># springBoot</a>
+          
+            <a href="/tags/代码分享/" rel="tag"># 代码分享</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/12/QRcode/" rel="next" title="如何使用 Java 生成二维码？">
+                <i class="fa fa-chevron-left"></i> 如何使用 Java 生成二维码？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Yu Peng</p>
+              <p class="site-description motion-element" itemprop="description">心往光明，春暖花开</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChaoMing1" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="liuyupeng@kedacom.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖包"><span class="nav-number">1.</span> <span class="nav-text">依赖包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库表"><span class="nav-number">2.</span> <span class="nav-text">数据库表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shiro-相关类"><span class="nav-number">3.</span> <span class="nav-text">Shiro 相关类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Shiro-配置类"><span class="nav-number">3.1.</span> <span class="nav-text">Shiro 配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">3.2.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yu Peng</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
