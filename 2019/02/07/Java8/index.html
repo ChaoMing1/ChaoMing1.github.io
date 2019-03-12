@@ -77,22 +77,23 @@
 
 
 
-<meta name="description" content="Lambda表达式让我们从最简单的例子开始，来学习如何对一个string列表进行排序。我们首先使用Java 8之前的方法来实现：12345678List&amp;lt;String&amp;gt; names = Arrays.asList(&amp;quot;peter&amp;quot;, &amp;quot;anna&amp;quot;, &amp;quot;mike&amp;quot;, &amp;quot;xenia&amp;quot;); Collections">
+<meta name="description" content="哥哥做了佛 弟弟做了恶人，弟弟对哥哥说安心做你的佛 渡不了的人交给我！   Lambda表达式让我们从最简单的例子开始，来学习如何对一个string列表进行排序。我们首先使用Java 8之前的方法来实现：12345678List&amp;lt;String&amp;gt; names = Arrays.asList(&amp;quot;peter&amp;quot;, &amp;quot;anna&amp;quot;, &amp;quot;mi">
 <meta name="keywords" content="java8,Lambda">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java8 简明教程">
 <meta property="og:url" content="http://yoursite.com/2019/02/07/Java8/index.html">
 <meta property="og:site_name" content="朝明">
-<meta property="og:description" content="Lambda表达式让我们从最简单的例子开始，来学习如何对一个string列表进行排序。我们首先使用Java 8之前的方法来实现：12345678List&amp;lt;String&amp;gt; names = Arrays.asList(&amp;quot;peter&amp;quot;, &amp;quot;anna&amp;quot;, &amp;quot;mike&amp;quot;, &amp;quot;xenia&amp;quot;); Collections">
+<meta property="og:description" content="哥哥做了佛 弟弟做了恶人，弟弟对哥哥说安心做你的佛 渡不了的人交给我！   Lambda表达式让我们从最简单的例子开始，来学习如何对一个string列表进行排序。我们首先使用Java 8之前的方法来实现：12345678List&amp;lt;String&amp;gt; names = Arrays.asList(&amp;quot;peter&amp;quot;, &amp;quot;anna&amp;quot;, &amp;quot;mi">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://thumbnail10.baidupcs.com/thumbnail/2d665de290feb54f733861327517de29?fid=4217219418-250528-1036440056633232&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-nQWWQmlrW7JaQPHYCrahcwCp6zM%3d&expires=8h&chkbd=0&chkv=0&dp-logid=1637777832771484163&dp-callid=0&time=1552370400&size=c1920_u1080&quality=90&vuk=4217219418&ft=image&autopolicy=1">
 <meta property="og:image" content="http://img.mp.itc.cn/upload/20170816/54686edf22c24c2cbc0bea89b394063c.jpg">
 <meta property="og:image" content="http://img.mp.itc.cn/upload/20170816/3fffa91b5ea54df080b88438eb362ff0.jpg">
 <meta property="og:image" content="http://img.mp.itc.cn/upload/20170816/43ad27e080bd477f8d351ddc88e24898.jpg">
-<meta property="og:updated_time" content="2019-03-12T03:10:51.146Z">
+<meta property="og:updated_time" content="2019-03-12T06:49:53.295Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java8 简明教程">
-<meta name="twitter:description" content="Lambda表达式让我们从最简单的例子开始，来学习如何对一个string列表进行排序。我们首先使用Java 8之前的方法来实现：12345678List&amp;lt;String&amp;gt; names = Arrays.asList(&amp;quot;peter&amp;quot;, &amp;quot;anna&amp;quot;, &amp;quot;mike&amp;quot;, &amp;quot;xenia&amp;quot;); Collections">
-<meta name="twitter:image" content="http://img.mp.itc.cn/upload/20170816/54686edf22c24c2cbc0bea89b394063c.jpg">
+<meta name="twitter:description" content="哥哥做了佛 弟弟做了恶人，弟弟对哥哥说安心做你的佛 渡不了的人交给我！   Lambda表达式让我们从最简单的例子开始，来学习如何对一个string列表进行排序。我们首先使用Java 8之前的方法来实现：12345678List&amp;lt;String&amp;gt; names = Arrays.asList(&amp;quot;peter&amp;quot;, &amp;quot;anna&amp;quot;, &amp;quot;mi">
+<meta name="twitter:image" content="https://thumbnail10.baidupcs.com/thumbnail/2d665de290feb54f733861327517de29?fid=4217219418-250528-1036440056633232&rt=pr&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-nQWWQmlrW7JaQPHYCrahcwCp6zM%3d&expires=8h&chkbd=0&chkv=0&dp-logid=1637777832771484163&dp-callid=0&time=1552370400&size=c1920_u1080&quality=90&vuk=4217219418&ft=image&autopolicy=1">
 
 
 
@@ -355,6 +356,12 @@
 
       
         <hr>
+<p><img src="https://thumbnail10.baidupcs.com/thumbnail/2d665de290feb54f733861327517de29?fid=4217219418-250528-1036440056633232&amp;rt=pr&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-nQWWQmlrW7JaQPHYCrahcwCp6zM%3d&amp;expires=8h&amp;chkbd=0&amp;chkv=0&amp;dp-logid=1637777832771484163&amp;dp-callid=0&amp;time=1552370400&amp;size=c1920_u1080&amp;quality=90&amp;vuk=4217219418&amp;ft=image&amp;autopolicy=1" alt="picture"></p>
+<blockquote>
+<blockquote>
+<p>哥哥做了佛 弟弟做了恶人，弟弟对哥哥说安心做你的佛 渡不了的人交给我！</p>
+</blockquote>
+</blockquote>
 <h3 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h3><p>让我们从最简单的例子开始，来学习如何对一个string列表进行排序。我们首先使用Java 8之前的方法来实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; names = Arrays.asList(&quot;peter&quot;, &quot;anna&quot;, &quot;mike&quot;, &quot;xenia&quot;);</span><br><span class="line"> </span><br><span class="line">Collections.sort(names, new Comparator&lt;String&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public int compare(String a, String b) &#123;</span><br><span class="line">        return b.compareTo(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <p>静态工具方法Collections.sort接受一个list，和一个Comparator接口作为输入参数，Comparator的实现类可以对输入的list中的元素进行比较。通常情况下，你可以直接用创建匿名Comparator对象，并把它作为参数传递给sort方法。</p>
 <a id="more"></a>
