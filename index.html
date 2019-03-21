@@ -385,7 +385,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  420
+                  404
                 </span>
               
 
@@ -423,8 +423,7 @@
 
       
         
-          <h3 id="sql-查出一张表中重复的所有记录数据"><a href="#sql-查出一张表中重复的所有记录数据" class="headerlink" title="sql 查出一张表中重复的所有记录数据"></a>sql 查出一张表中重复的所有记录数据</h3><hr>
-<h4 id="在面试的时候碰到一个-问题，就是让写一张表中有id和name-两个字段，查询出name重复的所有数据，现在列下："><a href="#在面试的时候碰到一个-问题，就是让写一张表中有id和name-两个字段，查询出name重复的所有数据，现在列下：" class="headerlink" title="在面试的时候碰到一个 问题，就是让写一张表中有id和name 两个字段，查询出name重复的所有数据，现在列下："></a>在面试的时候碰到一个 问题，就是让写一张表中有id和name 两个字段，查询出name重复的所有数据，现在列下：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> xi a <span class="keyword">where</span> (a.username) <span class="keyword">in</span>  (<span class="keyword">select</span> username <span class="keyword">from</span> xi <span class="keyword">group</span> <span class="keyword">by</span> username  <span class="keyword">having</span> <span class="keyword">count</span>(*) &gt; <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+          <h4 id="在面试的时候碰到一个-问题，就是让写一张表中有id和name-两个字段，查询出name重复的所有数据，现在列下："><a href="#在面试的时候碰到一个-问题，就是让写一张表中有id和name-两个字段，查询出name重复的所有数据，现在列下：" class="headerlink" title="在面试的时候碰到一个 问题，就是让写一张表中有id和name 两个字段，查询出name重复的所有数据，现在列下："></a>在面试的时候碰到一个 问题，就是让写一张表中有id和name 两个字段，查询出name重复的所有数据，现在列下：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> xi a <span class="keyword">where</span> (a.username) <span class="keyword">in</span>  (<span class="keyword">select</span> username <span class="keyword">from</span> xi <span class="keyword">group</span> <span class="keyword">by</span> username  <span class="keyword">having</span> <span class="keyword">count</span>(*) &gt; <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 <h4 id="查询出所有数据进行分组之后，和重复数据的重复次数的查询数据，先列下"><a href="#查询出所有数据进行分组之后，和重复数据的重复次数的查询数据，先列下" class="headerlink" title="查询出所有数据进行分组之后，和重复数据的重复次数的查询数据，先列下"></a>查询出所有数据进行分组之后，和重复数据的重复次数的查询数据，先列下</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span>  <span class="keyword">count</span>(username) <span class="keyword">as</span> <span class="string">'重复次数'</span>,username <span class="keyword">from</span> xi <span class="keyword">group</span> <span class="keyword">by</span> username  <span class="keyword">having</span> <span class="keyword">count</span>(*)&gt;<span class="number">1</span> <span class="keyword">order</span> <span class="keyword">by</span> username <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
 <h3 id="查询及删除重复记录的方法大全"><a href="#查询及删除重复记录的方法大全" class="headerlink" title="查询及删除重复记录的方法大全"></a>查询及删除重复记录的方法大全</h3><hr>
 <ul>
