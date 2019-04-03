@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这段时间在学习Spring，依赖注入DI和面向切面编程AOP是Spring框架最核心的部分。这次主要是总结依赖注入的bean的装配方式。  什么是依赖注入呢？也可以称为控制反转，简单的来说，一般完成稍微复杂的业务逻辑，可能需要多个类，会出现有些类要引用其他类的实例，也可以称为依赖其他类。传统的方法就是直接引用那个类对象作为自己的一个属性，但如果我们每次创建这个类的对象时，都会创建依赖的类的对象，还">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring 装配bean的三种方式">
+<meta property="og:url" content="http://yoursite.com/2019/04/03/spring-装配bean的三种方式/index.html">
+<meta property="og:site_name" content="朝明">
+<meta property="og:description" content="这段时间在学习Spring，依赖注入DI和面向切面编程AOP是Spring框架最核心的部分。这次主要是总结依赖注入的bean的装配方式。  什么是依赖注入呢？也可以称为控制反转，简单的来说，一般完成稍微复杂的业务逻辑，可能需要多个类，会出现有些类要引用其他类的实例，也可以称为依赖其他类。传统的方法就是直接引用那个类对象作为自己的一个属性，但如果我们每次创建这个类的对象时，都会创建依赖的类的对象，还">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-03T14:46:14.709Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring 装配bean的三种方式">
+<meta name="twitter:description" content="这段时间在学习Spring，依赖注入DI和面向切面编程AOP是Spring框架最核心的部分。这次主要是总结依赖注入的bean的装配方式。  什么是依赖注入呢？也可以称为控制反转，简单的来说，一般完成稍微复杂的业务逻辑，可能需要多个类，会出现有些类要引用其他类的实例，也可以称为依赖其他类。传统的方法就是直接引用那个类对象作为自己的一个属性，但如果我们每次创建这个类的对象时，都会创建依赖的类的对象，还">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/03/spring-装配bean的三种方式/">
+
+
+
+
+
+  <title>spring 装配bean的三种方式 | 朝明</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">朝明</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-读书">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            读书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-电影">
+          <a href="/movies" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-film"></i> <br>
+            
+            电影
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/03/spring-装配bean的三种方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yu Peng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="朝明">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring 装配bean的三种方式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T22:40:00+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这段时间在学习Spring，依赖注入DI和面向切面编程AOP是Spring框架最核心的部分。这次主要是总结依赖注入的bean的装配方式。</p>
+<hr>
+<p>什么是依赖注入呢？也可以称为控制反转，简单的来说，一般完成稍微复杂的业务逻辑，可能需要多个类，会出现有些类要引用其他类的实例，也可以称为依赖其他类。传统的方法就是直接引用那个类对象作为自己的一个属性，但如果我们每次创建这个类的对象时，都会创建依赖的类的对象，还有如果那个类将来可能不用了，还需要到这个类去删除这个对象，那破坏了代码的复用性和导致高度耦合！<br><a id="more"></a><br>依赖注入的出现可以很好地解决这个问题，依赖注入就是由系统负责协调类的依赖对象的创建，我们无需自己去显示的创建依赖对象，而是由系统给我们注入这个对象，系统控制了这个对象的创建，也称为控制反转。</p>
+<p>Spring给我们注入对象有三种方式：</p>
+<ul>
+<li>隐式的bean扫描发现机制和自动装配</li>
+<li>在java中进行显示配置</li>
+<li>在XML中进行显示配置</li>
+</ul>
+<h5 id="第一种：spring从两个角度实现自动化装配：组件扫描和自动装配。"><a href="#第一种：spring从两个角度实现自动化装配：组件扫描和自动装配。" class="headerlink" title="第一种：spring从两个角度实现自动化装配：组件扫描和自动装配。"></a>第一种：spring从两个角度实现自动化装配：组件扫描和自动装配。</h5><p>当对一个类标注@Component注解时，表明该类会作为组件类，spring将为这个类创建bean。当在应用文中引用这个bean，spring会自动扫描事先指定的包查找这个 bean。但spring默认是不启用组件扫描的，可以在XML中配置加上&lt;context:component-scan base-package=”xx”/&gt;。还有一种方法：在新建一个配置类，类中可以什么不用写，在配置类上加上@ComponentScan注解，spring会自动扫描改配置类所在的包，一般应该倾向xml配置。下面是一个bbs论坛系统用户发帖的功能小例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bbs.dao;</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Postdao</span> </span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *用户发帖 ，post表添加帖子信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addpost</span><span class="params">(@Param(<span class="string">"title"</span>)</span> String title,@<span class="title">Param</span><span class="params">(<span class="string">"content"</span>)</span> String content,@<span class="title">Param</span><span class="params">(<span class="string">"userid"</span>)</span> <span class="keyword">int</span> userid)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> bbs.dao;</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Userdao</span> </span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 用户发帖后，user表将用户发帖数加一</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">addpost</span><span class="params">(<span class="keyword">int</span> userid)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再在bbs.service包中创建一个postservice接口及其实现类，依赖Postdao和Userdao。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bbs.service;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PostService</span> </span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    用户发帖后，先添加帖子信息再更新用户发帖数量</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addpost</span><span class="params">(String title,String content,<span class="keyword">int</span> userid)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> bbs.service;</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PostserviceImpl</span> <span class="keyword">implements</span> <span class="title">PostService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Postdao postdao;</span><br><span class="line">    <span class="keyword">private</span> Userdao userdao;</span><br><span class="line"></span><br><span class="line"><span class="comment">//    @Autowired</span></span><br><span class="line"><span class="comment">//    public void setPostdao(Postdao postdao)</span></span><br><span class="line"><span class="comment">//    &#123;</span></span><br><span class="line"><span class="comment">//        this.postdao=postdao;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//    @Autowired</span></span><br><span class="line"><span class="comment">//    public void setUserdao(Userdao userdao)</span></span><br><span class="line"><span class="comment">//    &#123;</span></span><br><span class="line"><span class="comment">//        this.userdao=userdao;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PostserviceImpl</span><span class="params">(Postdao postdao,Userdao userdao)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.userdao=userdao;</span><br><span class="line">        <span class="keyword">this</span>.postdao=postdao;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addpost</span><span class="params">(String title, String content, <span class="keyword">int</span> userid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i=postdao.addpost(title, content, userid);</span><br><span class="line">        <span class="keyword">int</span> j=userdao.addpost(userid);</span><br><span class="line">        <span class="keyword">if</span>(i==<span class="number">1</span>&amp;j==<span class="number">1</span>)</span><br><span class="line">            System.out.println(<span class="string">"发帖成功"</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            System.out.println(<span class="string">"发帖失败"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>@Component在接口实现上注解就可以，但发现在userdao、postdao接口也加上了，其实可以去掉，因为我采用mybatis在xml中配置数据库的操作，动态实现dao接口。等下会提到。上面代码出现的@Autowired注解实现bean自动装配，会在spring应用上下文中的组件类寻找需求的bean。一般有两种装配方式：构造器和Setter方法(其他方法名也行，只要能够使注入的bean成为这个类的属性就行）</p>
+<p>也可能出现spring没有查找到匹配的bean会抛出异常，在@Autowired加上required=false，如果没有匹配的bean时，spring会使这个bean处于未装配的状态，没有装配成功。还有可能会出现相同名字的bean有很多个，会产生歧义，一般在组件类上添加注解@Qualifier()括号写这个bean的id，在注入时也加上@Qualifier(),写上bean的id。像下面：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Qualifier</span>(<span class="string">"postdao"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Postdao</span></span>&#123;</span><br><span class="line">. . . .     </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Qualifier</span>(<span class="string">"userdao"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Userdao</span></span>&#123;</span><br><span class="line">. . . . </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Qualifier</span>(<span class="string">"usedao"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserdao</span><span class="params">(Userdao userdao)</span></span></span><br><span class="line"><span class="function"></span>&#123;. . . </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Qualifier</span>(<span class="string">"postdao"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserdao</span><span class="params">(Postdao postdao)</span></span></span><br><span class="line"><span class="function"></span>&#123;. . . </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由于java不允许在同一个条目上重复出现相同类型的多个注解，所有注入采用set方式。但是其实可以创建自定义的限定符注解。这里就不介绍了。</p>
+<h5 id="第二种：通过java代码装配bean"><a href="#第二种：通过java代码装配bean" class="headerlink" title="第二种：通过java代码装配bean"></a>第二种：通过java代码装配bean</h5><p>一般通过组件扫描和自动装配方式就比较方便了，但如果由于需求我们要使用第三方的库的类，在这种情况没有办法到第三方库中去给类加注解，就不能使用第一种方法了。这时得采用显示装配，可以采用java代码或xml显示装配bean。使用java代码，先新建一个配置类JavaConfig，里面都是配置所需的bean，不应该有业务逻辑代码，所以单独建一个类。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ContextConfiguration</span>(locations = &#123;<span class="string">"classpath:spring/spring-dao.xml"</span>,<span class="string">"classpath:scan.xml"</span>&#125;）</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">bbsConfig</span></span>&#123;</span><br><span class="line">　　<span class="keyword">private</span> Postdao postdao;</span><br><span class="line">　　<span class="keyword">private</span> Userdao userdao;</span><br><span class="line">　　<span class="meta">@Bean</span>(name=<span class="string">"postservice"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> PostService <span class="title">getPost</span><span class="params">()</span></span></span><br><span class="line"><span class="function">　　</span>&#123;</span><br><span class="line">　　<span class="keyword">return</span> <span class="keyword">new</span> PostserviceImpl(postdao,userdao);</span><br><span class="line">　　&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在对PostService的bean注入时，同时又依赖了两个bean，postdao和userdao。直接引用beanID就可以，spring会自动地从容器中获取这些bean，只要他们的配置是正确的就行。这个例子中userdao、postdao是<strong>Mybatis配置自动扫描将dao接口生成代理注入到spring的</strong>，其实也算是xml装配bean。可参考这篇文章，写的挺清楚的。<a href="https://bijian1013.iteye.com/blog/2318860" target="_blank" rel="noopener"> https://bijian1013.iteye.com/blog/2318860</a></p>
+<p>这里如果再声明一个bean，返回的仍是postserviceImpl对象，和之前的那个bean完全一样，是同一个实例。一般spring@bean如果是同一个beanID，默认返回的是一个单例bean，注入的是同一个实例。如果修改其中一个会都改变的。</p>
+<p>不过在这里要注意进行测试时，由于spring的单元测试和springIoc容器是完全独立的，postdao和userdao注入检测时是使用locations加载xml文件，而postservice使用classes加载config类的<strong>，但是两个不能同时混用在@ContextConfiguration中。所以非要都测试的话，就分开测试吧。</strong></p>
+<h5 id="第三种：在XML中装配bean"><a href="#第三种：在XML中装配bean" class="headerlink" title="第三种：在XML中装配bean"></a>第三种：在XML中装配bean</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span> ?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">       xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">       xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">            http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="line"><span class="string">            http://www.springframework.org/schema/context"</span>&gt;</span><br><span class="line">    &lt;<span class="keyword">import</span> resource=<span class="string">"spring/spring-dao.xml"</span>/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;bean id=<span class="string">"postservice"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.bbs.service.impl.PostserviceImpl"</span>&gt;</span><br><span class="line">          &lt;constructor-arg ref=<span class="string">"postdao"</span>/&gt;</span><br><span class="line">            &lt;constructor-arg ref=<span class="string">"userdao"</span>/&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>配置postservice的bean时需要引入两个bean，postdao和userdao，放到constructor-arg的标签中，ref指的是依赖的bean的ID。如果是在javaConfig中配置的，就写@Bean的内容。如果是@Component就写@Qualifier的内容。这里是引入的是动态实现的dao接口的bean，是在spring-dao.xml中配置的，引入这个配置文件就可以自动获得beanID。</p>
+<hr>
+<p>混合使用三种装配：</p>
+<ol>
+<li>在类上可以使用@ import(bbsConfig.class)组合其他java注解</li>
+<li>在类上使用@ imortResource(“classpath:spring-dao.xml”)组合其他xml注解</li>
+<li>在类上可以使用@ContenxtConfiguration包含class或者xml</li>
+<li>在xml中可以用<import resource="spring-dao.xml">引入xml注解，也可以使用<bean class="com.bbs.dao.Userdao">引入java注解</bean></import></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Yu Peng 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/21/git常用命令图解-常见错误/" rel="next" title="git常用命令图解 & 常见错误">
+                <i class="fa fa-chevron-left"></i> git常用命令图解 & 常见错误
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="Yu Peng">
+            
+              <p class="site-author-name" itemprop="name">Yu Peng</p>
+              <p class="site-description motion-element" itemprop="description">长路漫漫，唯剑作伴</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ChaoMing1" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="liuyupeng@kedacom.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一种：spring从两个角度实现自动化装配：组件扫描和自动装配。"><span class="nav-number">1.</span> <span class="nav-text">第一种：spring从两个角度实现自动化装配：组件扫描和自动装配。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第二种：通过java代码装配bean"><span class="nav-number">2.</span> <span class="nav-text">第二种：通过java代码装配bean</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第三种：在XML中装配bean"><span class="nav-number">3.</span> <span class="nav-text">第三种：在XML中装配bean</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">共同学习，共同进步</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"model":"wanko","bottom":-30,"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
