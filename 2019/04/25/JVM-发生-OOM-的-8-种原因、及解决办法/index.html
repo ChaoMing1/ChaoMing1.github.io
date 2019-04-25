@@ -107,27 +107,19 @@
 
 
 
-<meta name="description" content="芳原绿野恣行事，春入遥山碧四围。兴逐乱红穿柳巷，困临流水坐苔矶。莫辞盏酒十分劝，只恐风花一片飞。况是清明好天气，不妨游衍莫忘归。">
+<meta name="description" content="Java 堆空间 GC 开销超过限制 请求的数组大小超过虚拟机限制发生频率 Perm gen 空间 Metaspace 无法新建本机线程 杀死进程或子进程 发生 stack_trace_with_native_method">
 <meta property="og:type" content="article">
-<meta property="og:title" content="金陵游记(一)">
-<meta property="og:url" content="http://yoursite.com/2019/04/13/Untitled/index.html">
+<meta property="og:title" content="JVM 发生 OOM 的 8 种原因、及解决办法">
+<meta property="og:url" content="http://yoursite.com/2019/04/25/JVM-发生-OOM-的-8-种原因、及解决办法/index.html">
 <meta property="og:site_name" content="朝明">
-<meta property="og:description" content="芳原绿野恣行事，春入遥山碧四围。兴逐乱红穿柳巷，困临流水坐苔矶。莫辞盏酒十分劝，只恐风花一片飞。况是清明好天气，不妨游衍莫忘归。">
+<meta property="og:description" content="Java 堆空间 GC 开销超过限制 请求的数组大小超过虚拟机限制发生频率 Perm gen 空间 Metaspace 无法新建本机线程 杀死进程或子进程 发生 stack_trace_with_native_method">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpggy1g21cnigv4lj30u00gudzg.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpgly1g21d2yubowj31hc0u0q8o.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpggy1g21dh28umgj31hc0u0afi.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpggy1g21djrz6wuj30u00gp4qp.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpggy1g21dwgts1kj30tv0gw1kx.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpgly1g21e1kcx5cj30u00gq0vj.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpgly1g21eei0aj8j30u0143aay.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpgly1g21ejxctxpj31430u076n.jpg">
-<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpggy1g21cpgedyaj30kw0clk45.jpg">
-<meta property="og:updated_time" content="2019-04-13T15:16:02.901Z">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/005BYqpggy1g2fb3mdrn3g30dw06eqtz.jpg">
+<meta property="og:updated_time" content="2019-04-25T15:41:40.084Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="金陵游记(一)">
-<meta name="twitter:description" content="芳原绿野恣行事，春入遥山碧四围。兴逐乱红穿柳巷，困临流水坐苔矶。莫辞盏酒十分劝，只恐风花一片飞。况是清明好天气，不妨游衍莫忘归。">
-<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/005BYqpggy1g21cnigv4lj30u00gudzg.jpg">
+<meta name="twitter:title" content="JVM 发生 OOM 的 8 种原因、及解决办法">
+<meta name="twitter:description" content="Java 堆空间 GC 开销超过限制 请求的数组大小超过虚拟机限制发生频率 Perm gen 空间 Metaspace 无法新建本机线程 杀死进程或子进程 发生 stack_trace_with_native_method">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/005BYqpggy1g2fb3mdrn3g30dw06eqtz.jpg">
 
 
 
@@ -157,13 +149,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/13/Untitled/">
+  <link rel="canonical" href="http://yoursite.com/2019/04/25/JVM-发生-OOM-的-8-种原因、及解决办法/">
 
 
 
 
 
-  <title>金陵游记(一) | 朝明</title>
+  <title>JVM 发生 OOM 的 8 种原因、及解决办法 | 朝明</title>
   
 
 
@@ -310,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/13/Untitled/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/25/JVM-发生-OOM-的-8-种原因、及解决办法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yu Peng">
@@ -327,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">金陵游记(一)</h1>
+          <h1 class="post-title" itemprop="name headline">JVM 发生 OOM 的 8 种原因、及解决办法</h1>
         
 
         <div class="post-meta">
@@ -339,8 +331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-13T23:14:39+08:00">
-                2019-04-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-25T22:51:30+08:00">
+                2019-04-25
               </time>
             
 
@@ -371,7 +363,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  414
+                  832
                 </span>
               
 
@@ -387,7 +379,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  2
                 </span>
               
             </div>
@@ -408,26 +400,113 @@
       
 
       
-        <blockquote>
-<p>芳原绿野恣行事，春入遥山碧四围。<br>兴逐乱红穿柳巷，困临流水坐苔矶。<br>莫辞盏酒十分劝，只恐风花一片飞。<br>况是清明好天气，不妨游衍莫忘归。</p>
+        <p><img src="https://ws3.sinaimg.cn/large/005BYqpggy1g2fb3mdrn3g30dw06eqtz.jpg" alt="photo"></p>
+<blockquote>
+<ol>
+<li>Java 堆空间</li>
+<li>GC 开销超过限制</li>
+<li>请求的数组大小超过虚拟机限制发生频率</li>
+<li>Perm gen 空间</li>
+<li>Metaspace</li>
+<li>无法新建本机线程</li>
+<li>杀死进程或子进程</li>
+<li>发生 stack_trace_with_native_method</li>
+</ol>
 </blockquote>
 <a id="more"></a>
-<h3 id="初日"><a href="#初日" class="headerlink" title="初日"></a>初日</h3><hr>
-<p>凌晨4:00出发,凌晨的火车站还是满满的人儿呀~<br><img src="https://ws3.sinaimg.cn/large/005BYqpggy1g21cnigv4lj30u00gudzg.jpg" width="600" hegiht="60" align="center"><br>等待浩儿数时，三猿齐，开逛之<br><img src="https://ws3.sinaimg.cn/large/005BYqpgly1g21d2yubowj31hc0u0q8o.jpg" width="600" hegiht="60" align="center"><br>本欲观之动物园，未果，皆因事先未谋，票尽，故转至雨花台</p>
-<blockquote>
-<p>雨花台是一座松柏环抱的秀丽山岗，高约100 米、长约3.5公里，顶部呈平台状，由2个紧紧相依的山岗组成。雨花台是新民主主义革命烈士殉难处，在这里遇难的共产党人和革命群众达10万之多。</p>
-</blockquote>
-<p>浩儿，你的剪刀手时认真的吗？<br><img src="https://ws3.sinaimg.cn/large/005BYqpggy1g21dh28umgj31hc0u0afi.jpg" width="600" hegiht="60" align="center"><br>祭奠英烈的花<br><img src="https://ws3.sinaimg.cn/large/005BYqpggy1g21djrz6wuj30u00gp4qp.jpg" width="600" hegiht="60" align="center"><br>向英雄致敬，鞠躬<br><img src="https://ws3.sinaimg.cn/large/005BYqpggy1g21dwgts1kj30tv0gw1kx.jpg" width="600" hegiht="60" align="center"><br>看到肃穆的标识牌，浩儿的表情庄重了不少<br><img src="https://ws3.sinaimg.cn/large/005BYqpgly1g21e1kcx5cj30u00gq0vj.jpg" width="600" hegiht="60" align="center"></p>
-<blockquote>
-<p>在伟大的中国人民解放事业中，革命先烈为了实现共产主义理想，为了国家独立，民族解放和民主自由英勇斗争壮烈牺牲在南京雨花台用鲜血和生命谱写了中国革命史上的英雄篇章，先烈们的革命精神将永远激励人们为了实现共产主义的崇高理想而奋斗！</p>
-</blockquote>
-<p>革命烈士永垂不朽<br><img src="https://ws3.sinaimg.cn/large/005BYqpgly1g21eei0aj8j30u0143aay.jpg" width="600" hegiht="60" align="center"><br>见证信仰的力量<br><img src="https://ws3.sinaimg.cn/large/005BYqpgly1g21ejxctxpj31430u076n.jpg" width="600" hegiht="60" align="center"></p>
-<p>今日最佳图片:雨花台<br><img src="https://ws3.sinaimg.cn/large/005BYqpggy1g21cpgedyaj30kw0clk45.jpg" width="600" hegiht="60" align="center"></p>
-<p>今日观之雨花台，回顾雨花英烈的生命历程，感悟信仰的力量，不忘初心，继续前进</p>
-<p>翌日看点:</p>
+<h3 id="Java-堆空间"><a href="#Java-堆空间" class="headerlink" title="Java 堆空间"></a>Java 堆空间</h3><hr>
+<p>发生频率：<font face="微软雅黑" size="4" color="red">5颗星</font></p>
+<h4 id="造成原因"><a href="#造成原因" class="headerlink" title="造成原因"></a>造成原因</h4><ul>
+<li><p>无法在 Java 堆中分配对象</p>
+</li>
+<li><p>吞吐量增加</p>
+</li>
+<li><p>应用程序无意中保存了对象引用，对象无法被 GC 回收</p>
+</li>
+<li><p>应用程序过度使用 finalizer。finalizer 对象不能被 GC 立刻回收。finalizer 由结束队列服务的守护线程调用，有时 finalizer 线程的处理能力无法跟上结束队列的增长</p>
+</li>
+</ul>
+<p><strong>解决方案</strong></p>
 <ul>
-<li>总统府</li>
-<li>南京大屠杀纪念馆</li>
+<li>使用 -Xmx 增加堆大小</li>
+<li>修复应用程序中的内存泄漏</li>
+</ul>
+<h3 id="GC-开销超过限制"><a href="#GC-开销超过限制" class="headerlink" title="GC 开销超过限制"></a>GC 开销超过限制</h3><hr>
+<p>发生频率：<font face="微软雅黑" size="4" color="red">5颗星</font><br>造成原因</p>
+<ul>
+<li>Java 进程98%的时间在进行垃圾回收，恢复了不到2%的堆空间，最后连续5个（编译时常量）垃圾回收一直如此。</li>
+</ul>
+<p><strong>解决方案</strong></p>
+<ul>
+<li>使用 -Xmx 增加堆大小</li>
+<li>使用 -XX:-UseGCOverheadLimit 取消 GC 开销限制</li>
+<li>修复应用程序中的内存泄漏</li>
+</ul>
+<h3 id="请求的数组大小超过虚拟机限制"><a href="#请求的数组大小超过虚拟机限制" class="headerlink" title="请求的数组大小超过虚拟机限制"></a>请求的数组大小超过虚拟机限制</h3><hr>
+<p>发生频率：<font face="微软雅黑" size="4" color="red">2颗星</font></p>
+<ul>
+<li>造成原因</li>
+<li>应用程序试图分配一个超过堆大小的数组</li>
+</ul>
+<p><strong>解决方案</strong></p>
+<ul>
+<li>使用 -Xmx 增加堆大小</li>
+<li>修复应用程序中分配巨大数组的 bug</li>
+</ul>
+<h3 id="Perm-gen-空间"><a href="#Perm-gen-空间" class="headerlink" title="Perm gen 空间"></a>Perm gen 空间</h3><hr>
+<p>发生频率：<font face="微软雅黑" size="4" color="red">3颗星</font><br>造成原因<br>Perm gen 空间包含：</p>
+<p>类的名字、字段、方法<br>与类相关的对象数组和类型数组<br>JIT 编译器优化<br>当 Perm gen 空间用尽时，将抛出异常。</p>
+<p><strong>解决方案</strong></p>
+<ul>
+<li>使用 -XX: MaxPermSize 增加 Permgen 大小</li>
+<li>不重启应用部署应用程序可能会导致此问题。重启 JVM 解决</li>
+</ul>
+<h3 id="Metaspace"><a href="#Metaspace" class="headerlink" title="Metaspace"></a>Metaspace</h3><hr>
+<p>发生频率：<font face="微软雅黑" size="4" color="red">3颗星</font><br>造成原因</p>
+<ul>
+<li>从 Java 8 开始 Perm gen 改成了 Metaspace，在本机内存中分配 class 元数据（称为 metaspace）。如果 metaspace 耗尽，则抛出异常</li>
+</ul>
+<p><strong>解决方案</strong></p>
+<ul>
+<li>通过命令行设置 -XX: MaxMetaSpaceSize 增加 metaspace 大小</li>
+<li>取消 -XX: maxmetsspacedize</li>
+<li>减小 Java 堆大小,为 MetaSpace 提供更多的可用空间为服务器分配更多的内存</li>
+<li>可能是应用程序 bug，修复 bug</li>
+</ul>
+<h3 id="无法新建本机线程"><a href="#无法新建本机线程" class="headerlink" title="无法新建本机线程"></a>无法新建本机线程</h3><hr>
+<p>发生频率：<font face="微软雅黑" size="4" color="red">5颗星</font><br>造成原因</p>
+<ul>
+<li>内存不足，无法创建新线程。由于线程在本机内存中创建，报告这个错误表明本机内存空间不足</li>
+</ul>
+<p><strong>解决方案</strong></p>
+<ul>
+<li>为机器分配更多的内存</li>
+<li>减少 Java 堆空间</li>
+<li>修复应用程序中的线程泄漏。</li>
+<li>增加操作系统级别的限制</li>
+<li>用户进程数增大 (-u) 1800</li>
+<li>使用 -Xss 减小线程堆栈大小</li>
+</ul>
+<h3 id="杀死进程或子进程"><a href="#杀死进程或子进程" class="headerlink" title="杀死进程或子进程"></a>杀死进程或子进程</h3><hr>
+<p>发生频率：<font face="微软雅黑" size="4" color="red">1颗星</font><br>造成原因</p>
+<ul>
+<li>内核任务：内存不足结束器，在可用内存极低的情况下会杀死进程</li>
+</ul>
+<p><strong>解决方案</strong></p>
+<ul>
+<li>将进程迁移到不同的机器上</li>
+<li>给机器增加更多内存</li>
+<li>与其他 OOM 错误不同，这是由操作系统而非 JVM 触发的。</li>
+</ul>
+<h3 id="发生-stack-trace-with-native-method"><a href="#发生-stack-trace-with-native-method" class="headerlink" title="发生 stack_trace_with_native_method"></a>发生 stack_trace_with_native_method</h3><hr>
+<p>发生频率：<font face="微软雅黑" size="4" color="red">1颗星</font><br>造成原因</p>
+<ul>
+<li>本机方法（native method）分配失败</li>
+<li>打印的堆栈跟踪信息，最顶层的帧是本机方法</li>
+</ul>
+<p><strong>解决方案</strong></p>
+<ul>
+<li>使用操作系统本地工具进行诊断</li>
 </ul>
 
       
@@ -477,8 +556,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/03/spring-装配bean的三种方式/" rel="next" title="spring 装配bean的三种方式">
-                <i class="fa fa-chevron-left"></i> spring 装配bean的三种方式
+              <a href="/2019/04/13/Untitled/" rel="next" title="金陵游记(一)">
+                <i class="fa fa-chevron-left"></i> 金陵游记(一)
               </a>
             
           </div>
@@ -486,10 +565,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/25/JVM-发生-OOM-的-8-种原因、及解决办法/" rel="prev" title="JVM 发生 OOM 的 8 种原因、及解决办法">
-                JVM 发生 OOM 的 8 种原因、及解决办法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -639,7 +714,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#初日"><span class="nav-number">1.</span> <span class="nav-text">初日</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-堆空间"><span class="nav-number">1.</span> <span class="nav-text">Java 堆空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#造成原因"><span class="nav-number">1.1.</span> <span class="nav-text">造成原因</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC-开销超过限制"><span class="nav-number">2.</span> <span class="nav-text">GC 开销超过限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求的数组大小超过虚拟机限制"><span class="nav-number">3.</span> <span class="nav-text">请求的数组大小超过虚拟机限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Perm-gen-空间"><span class="nav-number">4.</span> <span class="nav-text">Perm gen 空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Metaspace"><span class="nav-number">5.</span> <span class="nav-text">Metaspace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无法新建本机线程"><span class="nav-number">6.</span> <span class="nav-text">无法新建本机线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#杀死进程或子进程"><span class="nav-number">7.</span> <span class="nav-text">杀死进程或子进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发生-stack-trace-with-native-method"><span class="nav-number">8.</span> <span class="nav-text">发生 stack_trace_with_native_method</span></a></li></ol></div>
             
 
           </div>
